@@ -1,16 +1,15 @@
-class typeError {
-    name = 'Error'
-    msg;
-
+class Validation extends Error {
     constructor (message) {
-        this.msg = message;
-
-        try {
-            throw new Error(this.name)
-        } catch {
-           throw new Error(`${this.name}: ${this.msg}`)
-        }
+        this.name = 'Validation';
+        this.message = message;
     }
 }
 
-module.exports = { typeError }
+class ConnectionError extends Error {
+    constructor (message) {
+        this.name = 'ConnectionError';
+        this.message = message;
+    }
+}
+
+module.exports = { Validation, ConnectionError }

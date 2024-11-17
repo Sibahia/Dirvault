@@ -8,9 +8,6 @@ class player {
     constructor(playerName, playerChapter) {
         this.name = playerName;
         this.chapter = playerChapter;
-
-        if (this.name == undefined || this.name == "") { new typeError('Nombre está vacío') }
-        if (this.chapter == undefined || this.chapter == "") { new typeError('Clase está vacía') }
     }
 }
 
