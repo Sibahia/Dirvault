@@ -1,5 +1,5 @@
 const { player } = require('../components/classPlayer');
-const { ConnectionError } = require('../components/typesError')
+const { Validation, ConnectionError } = require('../components/typesError');
 
 const sql = require('sqlite3').verbose();
 const db = new sql.Database('../backend/database/usersInfo.db', (err) => {
@@ -10,7 +10,7 @@ let PROPS = 'CREATE TABLE IF NOT EXISTS usersInfo (userID INTEGER PRIMARY KEY UN
 
 db.serialize(() => {
     db.run(PROPS)
-    db.run('CREATE TABLE IF NOT EXISTS userSoli (numSoli INTEGER PRIMARY KEY, userSoli TEXT NOT NULL UNIQUE, userSoliClass TEXT NOT NULL, status BOOLEAN)')
+    db.run('CREATE TABLE IF NOT EXISTS userSoli (numSoliName INTEGER PRIMARY KEY, userSoliName TEXT NOT NULL UNIQUE, userSoliClass TEXT NOT NULL, status BOOLEAN)')
 })
 
 function newPlayer (playerName, playerClass, playerXP) {
@@ -25,15 +25,15 @@ function newPlayer (playerName, playerClass, playerXP) {
 function newSoli (playerName, playerClass) {
     
     db.serialize(() => {
-        db.run(`INSERT INTO userSoli (userSoli, userSoliClass, status) VALUES (?, ?, ?)`, [playerName, playerClass, false])
+        db.run(`INSERT INTO userSoli (userSoliName, userSoliClass, status) VALUES (?, ?, ?)`, [playerName, playerClass, false])
         })
     }
 
 function getSolis (rows) {
     return new Promise((resolve, reject) => {
-        db.all('SELECT userSoli, userSoliClass, status FROM userSoli', [], (err, row) => {
+        db.all('SELECT userSoliName, userSoliClass, status FROM userSoli', [], (err, row) => {
             if (err)  {
-                reject(new ConnectionError('database error'))
+                reject('database error')
             } else {
                 resolve(row)
             }
@@ -43,4 +43,46 @@ function getSolis (rows) {
 
 }
 
-module.exports = { newPlayer, newSoli, getSolis }
+// if (userName == null) {
+//     console.log(userId)
+//     db.get('SELECT userSoliName, userSoliClass, status FROM userSoli WHERE numSoliName = ?', [userId], (err, row) => {
+//         if (row == undefined) { console.log('unefined') } 
+//         if (!row) { resolve('id not exists') }
+
+//         try {
+//             resolve(row)
+//         } catch (error) {
+//             reject('database error')
+//         }
+//     })
+// }
+
+// if (userId == null) {
+//     db.all('SELECT userSoliName, userSoliClass, status FROM userSoli WHERE userSoliName = ?', [userName], (err, row) => {
+//         if (row == undefined) { console.log('undefined pa') }
+//         if (row == 0) { resolve('user not exists') }
+        
+//         try {
+//             resolve(row)
+//         } catch (error) {
+//             reject('database error')
+//         }
+//     })
+// }
+
+function getUserDb (userId, userName) {
+        let data = userId ? userId : userName;
+        return new Promise((resolve, reject) => {
+            if (!data) return reject('not have data') ;
+            db.get('SELECT userSoliName, userSoliClass, status FROM userSoli WHERE numSoliName = ? OR userSoliName = ?', [data, data], (err, rows) => {
+                if (!rows) return reject('id not exists');
+                try {
+                    resolve(rows);
+                } catch (error) {
+                    reject('database error');
+                };
+            });
+        });
+}
+
+module.exports = { newPlayer, newSoli, getSolis, getUserDb }
