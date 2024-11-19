@@ -14,15 +14,4 @@ const validateUser = ({ name, chapter } = {}) => {
     }
 }
 
-// const valideUserDb = ({ id, name } = {}) => {
-//     if (!id) throw new Validation('id is required')
-//     if (!name) throw new Validation('name is required')
-
-//     if (name == null) {
-//         try {
-
-//         }
-//     }
-// }
-
 module.exports = { validateUser }
