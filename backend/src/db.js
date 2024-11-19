@@ -43,33 +43,6 @@ function getSolis (rows) {
 
 }
 
-// if (userName == null) {
-//     console.log(userId)
-//     db.get('SELECT userSoliName, userSoliClass, status FROM userSoli WHERE numSoliName = ?', [userId], (err, row) => {
-//         if (row == undefined) { console.log('unefined') } 
-//         if (!row) { resolve('id not exists') }
-
-//         try {
-//             resolve(row)
-//         } catch (error) {
-//             reject('database error')
-//         }
-//     })
-// }
-
-// if (userId == null) {
-//     db.all('SELECT userSoliName, userSoliClass, status FROM userSoli WHERE userSoliName = ?', [userName], (err, row) => {
-//         if (row == undefined) { console.log('undefined pa') }
-//         if (row == 0) { resolve('user not exists') }
-        
-//         try {
-//             resolve(row)
-//         } catch (error) {
-//             reject('database error')
-//         }
-//     })
-// }
-
 function getUserDb (userId, userName) {
         let data = userId ? userId : userName;
         return new Promise((resolve, reject) => {
