@@ -14,15 +14,27 @@ const validateUser = ({ name, chapter } = {}) => {
     }
 }
 
-// const valideUserDb = ({ id, name } = {}) => {
-//     if (!id) throw new Validation('id is required')
-//     if (!name) throw new Validation('name is required')
+const valideUserDb = (type, value) => {
+    let userId = type == 'id';
+    let userName = type == 'name';
 
-//     if (name == null) {
-//         try {
+    if (userId && isNaN(value) || userName && !isNaN(value)) {
+        let data = userId ? 'id' : 'name';
+        throw new Validation(`not a ${data}`)
+    }
 
-//         }
-//     }
-// }
+}
 
-module.exports = { validateUser }
+const valideUserChapter = (chapter) => {
+    const nameChapters = ['Mague', 'Rogue', 'Paladin']
+
+    if (!isNaN(chapter)) throw new Validation('not a chapter, chapters: [Paladin, Rogue, Mague]')
+    
+    const checkChapters = (chapters) => chapters == chapter;
+
+    let isChapter = nameChapters.some(checkChapters)
+
+    if (!isChapter) throw new Validation('not exist chapter')
+}
+
+module.exports = { validateUser, valideUserDb, valideUserChapter }

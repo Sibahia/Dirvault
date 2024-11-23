@@ -1,24 +1,30 @@
 const express = require('express');
 const app = express();
 const fs = require('fs');
+const cors = require('cors')
 
-const { newPlayer, newSoli, getSolis, getUserDb } = require('./db.js');
-const { validateUser } = require('../components/validations.js')
+const { newPlayer, newSoli, getSolis, getUserDb, getUsersClass } = require('./db.js');
+const { validateUser, valideUserDb, valideUserChapter } = require('../components/validations.js')
 const { player } = require('../components/classPlayer.js');
 const { error } = require('console');
+const { ConnectionError } = require('../components/typesError.js');
 
-let PATH_JSON = './database/solicitudes.json';
+let CORS_OPTION = {
+    'origin': '*',
+    'methods': ['GET', 'POST']
+}
 
 const port = 5500;
 
 app.use(express.json())
+app.use(cors(CORS_OPTION))
 
 app.listen(port, () => {
     console.log(`Listening on ${port}`)
 })
 
 app.get('/', (req, res) => {
-    res.send('Hello')
+    res.status(200).send('Hello')
 })
 
 app.post('/reg', (req, res) => {
@@ -30,7 +36,7 @@ app.post('/reg', (req, res) => {
 
     try {
         validateUser(plUser)
-        res.send('user saved')
+        res.status(201).send('user saved')
     } catch (error) {
         res.status(400).send(`${error.name}: ${error.message}`)
     }
@@ -43,30 +49,37 @@ app.get('/users', (req, res) => {
 
 app.get('/solic', (req, res) => {
     getSolis()
-    .then(data => res.send(data))
-    .catch(error => res.send(error.message))
+    .then(data => res.status(200).send(JSON.stringify(data)))
+    .catch(error => res.status(404).send(error.message))
 })
 
-app.use('/users/name/:name', (req, res) => {
-    if (!isNaN(req.params.name)) {
-        res.send('not a name')
-    } else {
-        getUserDb(req.params.name)
-        .then(data => res.send(data))
-        .catch(error => res.send(error))
+app.get('/users/:type/:value', (req, res) => {
+    try {
+        valideUserDb(req.params.type, req.params.value)
+
+        getUserDb(req.params.value)
+        .then(data => res.status(200).send(JSON.stringify(data)))
+        .catch(error => res.status(404).send(`${error.name}: ${error.message}`))
+    } catch (error) {
+        res.status(400).send(`${error.name}: ${error.message}`)
     }
 })
 
-app.use('/users/id/:id', (req, res) => {
-    if (isNaN(req.params.id)) {
-        res.send('not a id')
-    } else {
-        getUserDb(req.params.id)
-        .then(data => res.send(data))
-        .catch(error => res.send(error))
+app.get('/users/class', (req, res) => {
+    let filters = req.query;
+
+    try {
+        valideUserChapter(filters.chapter)
+
+        getUsersClass(filters.chapter)
+        .then(data => res.status(200).send(JSON.stringify(data)))
+        .catch(error => res.status(404).send(JSON.stringify(error)))
+    } catch (error) {
+        res.status(400).send(JSON.stringify(`${error.name}: ${error.message}`))
     }
+    
 })
 
-app.get('*', (req, res) => {
+app.use('*', (req, res) => {
     res.status(404).send('route no exists')
 })

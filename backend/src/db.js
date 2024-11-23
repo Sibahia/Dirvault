@@ -43,35 +43,7 @@ function getSolis (rows) {
 
 }
 
-// if (userName == null) {
-//     console.log(userId)
-//     db.get('SELECT userSoliName, userSoliClass, status FROM userSoli WHERE numSoliName = ?', [userId], (err, row) => {
-//         if (row == undefined) { console.log('unefined') } 
-//         if (!row) { resolve('id not exists') }
-
-//         try {
-//             resolve(row)
-//         } catch (error) {
-//             reject('database error')
-//         }
-//     })
-// }
-
-// if (userId == null) {
-//     db.all('SELECT userSoliName, userSoliClass, status FROM userSoli WHERE userSoliName = ?', [userName], (err, row) => {
-//         if (row == undefined) { console.log('undefined pa') }
-//         if (row == 0) { resolve('user not exists') }
-        
-//         try {
-//             resolve(row)
-//         } catch (error) {
-//             reject('database error')
-//         }
-//     })
-// }
-
-function getUserDb (userId, userName) {
-        let data = userId ? userId : userName;
+function getUserDb (data) {
         return new Promise((resolve, reject) => {
             if (!data) return reject('not have data') ;
             db.get('SELECT userSoliName, userSoliClass, status FROM userSoli WHERE numSoliName = ? OR userSoliName = ?', [data, data], (err, rows) => {
@@ -85,4 +57,19 @@ function getUserDb (userId, userName) {
         });
 }
 
-module.exports = { newPlayer, newSoli, getSolis, getUserDb }
+function getUsersClass (data) {
+    return new Promise((resolve, reject) => {
+        if (!data) return reject('not have data')
+        db.all('SELECT userSoliName, userSoliClass, status FROM userSoli WHERE userSoliClass = ?', [data], (err, rows) => {
+            if (rows == 0) return reject('there is no data')
+            if (!rows) return reject('class not exists')
+                try {
+                    resolve(rows);
+                } catch (error) {
+                    reject('database error')
+                }
+        })
+    })
+}
+
+module.exports = { newPlayer, newSoli, getSolis, getUserDb, getUsersClass }
