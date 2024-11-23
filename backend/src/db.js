@@ -43,12 +43,7 @@ function getSolis (rows) {
 
 }
 
-<<<<<<< HEAD
 function getUserDb (data) {
-=======
-function getUserDb (userId, userName) {
-        let data = userId ? userId : userName;
->>>>>>> 04a9e99e40683be3830d683bdc5878adb0bd8179
         return new Promise((resolve, reject) => {
             if (!data) return reject('not have data') ;
             db.get('SELECT userSoliName, userSoliClass, status FROM userSoli WHERE numSoliName = ? OR userSoliName = ?', [data, data], (err, rows) => {
@@ -62,7 +57,6 @@ function getUserDb (userId, userName) {
         });
 }
 
-<<<<<<< HEAD
 function getUsersClass (data) {
     return new Promise((resolve, reject) => {
         if (!data) return reject('not have data')
@@ -79,6 +73,3 @@ function getUsersClass (data) {
 }
 
 module.exports = { newPlayer, newSoli, getSolis, getUserDb, getUsersClass }
-=======
-module.exports = { newPlayer, newSoli, getSolis, getUserDb }
->>>>>>> 04a9e99e40683be3830d683bdc5878adb0bd8179
