@@ -14,6 +14,7 @@ const validateUser = ({ name, chapter } = {}) => {
     }
 }
 
+<<<<<<< HEAD
 const valideUserDb = (type, value) => {
     let userId = type == 'id';
     let userName = type == 'name';
@@ -38,3 +39,6 @@ const valideUserChapter = (chapter) => {
 }
 
 module.exports = { validateUser, valideUserDb, valideUserChapter }
+=======
+module.exports = { validateUser }
+>>>>>>> 04a9e99e40683be3830d683bdc5878adb0bd8179
