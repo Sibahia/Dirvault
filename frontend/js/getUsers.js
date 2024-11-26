@@ -32,7 +32,6 @@ fetch(`http://localhost:5500/solic`, {
     .catch(err => console.log(err))
 
 function deleteUser(name) {
-
     fetch(`http://localhost:5500/users/name/${name}`, {
         method: 'DELETE',
         mode: 'cors',
@@ -41,7 +40,6 @@ function deleteUser(name) {
         }
     })
     .catch(error => console.log(error))
-
 }
 
 
