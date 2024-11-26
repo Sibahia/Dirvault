@@ -3,7 +3,7 @@ const app = express();
 const fs = require('fs');
 const cors = require('cors')
 
-const { newPlayer, newSoli, getSolis, getUserDb, getUsersClass } = require('./db.js');
+const { newPlayer, newSoli, getSolis, getUserDb, getUsersClass, deleteUserDb } = require('./db.js');
 const { validateUser, valideUserDb, valideUserChapter } = require('../components/validations.js')
 const { player } = require('../components/classPlayer.js');
 const { error } = require('console');
@@ -11,7 +11,7 @@ const { ConnectionError } = require('../components/typesError.js');
 
 let CORS_OPTION = {
     'origin': '*',
-    'methods': ['GET', 'POST']
+    'methods': ['GET', 'POST', 'DELETE']
 }
 
 const port = 5500;
@@ -58,6 +58,18 @@ app.get('/users/:type/:value', (req, res) => {
         valideUserDb(req.params.type, req.params.value)
 
         getUserDb(req.params.value)
+        .then(data => res.status(200).send(JSON.stringify(data)))
+        .catch(error => res.status(404).send(`${error.name}: ${error.message}`))
+    } catch (error) {
+        res.status(400).send(`${error.name}: ${error.message}`)
+    }
+})
+
+app.delete('/users/:type/:value', (req, res) => {
+    try {
+        valideUserDb(req.params.type, req.params.value)
+
+        deleteUserDb(req.params.value)
         .then(data => res.status(200).send(JSON.stringify(data)))
         .catch(error => res.status(404).send(`${error.name}: ${error.message}`))
     } catch (error) {

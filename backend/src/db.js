@@ -57,6 +57,19 @@ function getUserDb (data) {
         });
 }
 
+function deleteUserDb (data) {
+    return new Promise((resolve, reject) => {
+        if (!data) return reject('not have data');
+        db.run('DELETE FROM userSoli WHERE userSoliName = ?', [data], (error) => {
+            try {
+                resolve('user deleted succesfull')
+            } catch (error) {
+                reject('database error')
+            }
+        })
+    });
+};
+
 function getUsersClass (data) {
     return new Promise((resolve, reject) => {
         if (!data) return reject('not have data')
@@ -68,8 +81,8 @@ function getUsersClass (data) {
                 } catch (error) {
                     reject('database error')
                 }
-        })
-    })
-}
+        });
+    });
+};
 
-module.exports = { newPlayer, newSoli, getSolis, getUserDb, getUsersClass }
+module.exports = { newPlayer, newSoli, getSolis, getUserDb, getUsersClass, deleteUserDb }

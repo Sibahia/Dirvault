@@ -1,0 +1,79 @@
+:root {
+    --cinder: #0c0a10;
+    --dark-gray: #28262d83;
+    --dark-text: #f4f2f0;
+    --dark-field:#28262d;
+    --dark-btn-denied: #c40909d5;
+    --dark-btn-denied-hov: #c40909;
+    --dark-btn-approved: #04d404d5;
+    --dark-btn-approved-hov: #04d404;
+}
+
+* {
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--cinder);
+    max-width: 1280px;
+    padding: 2rem;
+    margin: 0 auto;
+    text-align: center;
+}
+
+table {
+    border-collapse: collapse;
+    border-radius: 10px;
+    background: var(--dark-gray);
+    overflow: hidden;
+}
+
+thead {
+    color: var(--dark-text);
+}
+
+thead, th {
+    padding: 14px;
+}
+
+tbody, td {
+    margin: auto;
+    padding: 8px;
+    color: var(--dark-text);
+    border-bottom: 1px solid var(--cinder);
+} 
+
+.btn-submit {
+    border: none;
+    margin: 2px;
+    color: var(--dark-text);
+    padding: 6px 12px;
+    background:none;
+    font-size: 1.3rem;
+}
+
+.icon-idle {
+    font-size: 1rem;
+}
+
+#icon-idle {
+    color: gold;
+}
+
+#btn-submit-denied {
+    color: var(--dark-btn-denied)
+}
+
+#btn-submit-approve {
+    color: var(--dark-btn-approved)
+}
+
+#btn-submit-denied:hover {
+    transition: 0.1s;
+    color: var(--dark-btn-denied-hov)
+}
+
+#btn-submit-approve:hover {
+    transition: 0.1s;
+    color: var(--dark-btn-approved-hov)
+}
