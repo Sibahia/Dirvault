@@ -23,7 +23,6 @@ function newPlayer (playerName, playerClass, playerXP) {
 }
 
 function newSoli (playerName, playerClass) {
-    
     db.serialize(() => {
         db.run(`INSERT INTO userSoli (userSoliName, userSoliClass, status) VALUES (?, ?, ?)`, [playerName, playerClass, false])
         })
@@ -36,12 +35,10 @@ function getSolis (rows) {
                 reject('database error')
             } else {
                 resolve(row)
-            }
-            
-        })
-    })
-
-}
+            } 
+        });
+    });
+};
 
 function getUserDb (data) {
         return new Promise((resolve, reject) => {
