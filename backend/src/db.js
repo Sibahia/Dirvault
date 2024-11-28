@@ -54,7 +54,7 @@ function getUserDb (data) {
                 };
             });
         });
-}
+};
 
 function deleteUserDb (data) {
     return new Promise((resolve, reject) => {
