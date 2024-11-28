@@ -53,11 +53,7 @@ function userVerified (name) {
 
     fetch(`http://localhost:5500/users/requests?name=${name}`, {
         method: 'POST',
-        mode: 'cors',
-        // headers: {
-        //     'Content-Type': 'application/x-www-form-urlencoded'
-        //    },
-        // body: queryParams
+        mode: 'cors'
     })
     .catch((error) => console.log(error))
 }
