@@ -6,7 +6,6 @@ const cors = require('cors')
 const { newPlayer, getSolis, getUserDb, getUsersClass, deleteUserDb } = require('./db.js');
 const { validateUser, valideUserDb, valideUserChapter } = require('../components/validations.js')
 const { player } = require('../components/classPlayer.js');
-const { ConnectionError } = require('../components/typesError.js');
 
 let CORS_OPTION = {
     'origin': '*',
