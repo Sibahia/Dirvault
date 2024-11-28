@@ -45,7 +45,6 @@ function deleteUser(id, name) {
         }
     })
     .catch(error => console.log(error))
-
 }
 
 function userVerified (name) {

@@ -37,12 +37,10 @@ function getSolis (rows) {
                 reject('database error')
             } else {
                 resolve(row)
-            }
-            
-        })
-    })
-
-}
+            } 
+        });
+    });
+};
 
 function getUserDb (data) {
         return new Promise((resolve, reject) => {
