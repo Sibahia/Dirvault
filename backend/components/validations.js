@@ -1,4 +1,4 @@
-const { newSoli } = require('../src/db');
+const { newPlayerSolicitude } = require('../src/db');
 const { Validation, ConnectionError } = require('./typesError');
 
 const validateUser = ({ name, chapter } = {}) => {
@@ -8,7 +8,7 @@ const validateUser = ({ name, chapter } = {}) => {
     if (name.length < 3) throw new Validation('name must have at least 3 characters')
 
     try {
-        newSoli(name, chapter)
+        newPlayerSolicitude(name, chapter)
     } catch (e) {
         throw new ConnectionError('database is not available')
     }
