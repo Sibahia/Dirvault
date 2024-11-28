@@ -6,23 +6,24 @@ const db = new sql.Database('../backend/database/usersInfo.db', (err) => {
     if (err) { console.log(err) }
 });
 
-let PROPS = 'CREATE TABLE IF NOT EXISTS usersInfo (userID INTEGER PRIMARY KEY UNIQUE, userName TEXT, userClass TEXT, userXP INTEGER)'
+let PROPS = 'CREATE TABLE IF NOT EXISTS usersInfo (userID INTEGER PRIMARY KEY UNIQUE, userName TEXT, userClass TEXT, userXP INTEGER DEFAULT 0)'
 
 db.serialize(() => {
     db.run(PROPS)
     db.run('CREATE TABLE IF NOT EXISTS userSoli (numSoliName INTEGER PRIMARY KEY, userSoliName TEXT NOT NULL UNIQUE, userSoliClass TEXT NOT NULL, status BOOLEAN)')
 })
 
-function newPlayer (playerName, playerClass, playerXP) {
+function newPlayer (playerName) {
 
     if (!newPlayer) { console.log('No hay valores ingresados') } 
 
     db.serialize(() => {
-        db.run(`INSERT INTO usersInfo (userName, userClass, userXP) (?, ?, ?)`, [playerName, playerClass, playerXP])
+        db.run(`INSERT INTO usersInfo (userName, userClass) SELECT userSoliName, userSoliClass FROM userSoli WHERE userSoliName = ?`, [playerName])
+        db.run(`DELETE FROM userSoli WHERE userSoliName = ?`, [playerName])
     })
 }
 
-function newSoli (playerName, playerClass) {
+function newPlayerSolicitude (playerName, playerClass) {
     
     db.serialize(() => {
         db.run(`INSERT INTO userSoli (userSoliName, userSoliClass, status) VALUES (?, ?, ?)`, [playerName, playerClass, false])
@@ -31,7 +32,7 @@ function newSoli (playerName, playerClass) {
 
 function getSolis (rows) {
     return new Promise((resolve, reject) => {
-        db.all('SELECT userSoliName, userSoliClass, status FROM userSoli', [], (err, row) => {
+        db.all('SELECT numSoliName,userSoliName, userSoliClass, status FROM userSoli', [], (err, row) => {
             if (err)  {
                 reject('database error')
             } else {
@@ -85,4 +86,4 @@ function getUsersClass (data) {
     });
 };
 
-module.exports = { newPlayer, newSoli, getSolis, getUserDb, getUsersClass, deleteUserDb }
+module.exports = { newPlayer, newPlayerSolicitude, getSolis, getUserDb, getUsersClass, deleteUserDb }

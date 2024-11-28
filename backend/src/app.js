@@ -3,7 +3,7 @@ const app = express();
 const fs = require('fs');
 const cors = require('cors')
 
-const { newPlayer, newSoli, getSolis, getUserDb, getUsersClass, deleteUserDb } = require('./db.js');
+const { newPlayer, getSolis, getUserDb, getUsersClass, deleteUserDb } = require('./db.js');
 const { validateUser, valideUserDb, valideUserChapter } = require('../components/validations.js')
 const { player } = require('../components/classPlayer.js');
 const { error } = require('console');
@@ -27,7 +27,7 @@ app.get('/', (req, res) => {
     res.status(200).send('Hello')
 })
 
-app.post('/reg', (req, res) => {
+app.post('/register', (req, res) => {
     const { plName, plClass } =  req.body;
 
     // if (!plName || !plClass) { return console.log('Error Params') }
@@ -36,21 +36,26 @@ app.post('/reg', (req, res) => {
 
     try {
         validateUser(plUser)
-        res.status(201).send('user saved')
+        res.status(201).send(JSON.stringify('user saved'))
     } catch (error) {
-        res.status(400).send(`${error.name}: ${error.message}`)
+        res.status(400).send(JSON.stringify(`${error.name}: ${error.message}`))
     }
     
 })
 
-app.get('/users', (req, res) => {
-    res.render()
-})
-
-app.get('/solic', (req, res) => {
+app.get('/users/requests', (req, res) => {
     getSolis()
     .then(data => res.status(200).send(JSON.stringify(data)))
-    .catch(error => res.status(404).send(error.message))
+    .catch(error => res.status(404).send(JSON.stringify(error.message)))
+})
+
+app.post('/users/requests', (req, res) => {
+    try {
+        newPlayer(req.query.name)
+        res.status(201).send(JSON.stringify('user accept'))
+    } catch(error) {
+        res.status(400).send(JSON.stringify(`${error.message}`))
+    }
 })
 
 app.get('/users/:type/:value', (req, res) => {
@@ -59,9 +64,9 @@ app.get('/users/:type/:value', (req, res) => {
 
         getUserDb(req.params.value)
         .then(data => res.status(200).send(JSON.stringify(data)))
-        .catch(error => res.status(404).send(`${error.name}: ${error.message}`))
+        .catch(error => res.status(404).send(JSON.stringify(`${error.name}: ${error.message}`)))
     } catch (error) {
-        res.status(400).send(`${error.name}: ${error.message}`)
+        res.status(400).send(JSON.stringify(`${error.name}: ${error.message}`))
     }
 })
 
@@ -71,9 +76,9 @@ app.delete('/users/:type/:value', (req, res) => {
 
         deleteUserDb(req.params.value)
         .then(data => res.status(200).send(JSON.stringify(data)))
-        .catch(error => res.status(404).send(`${error.name}: ${error.message}`))
+        .catch(error => res.status(404).send(JSON.stringify(`${error.name}: ${error.message}`)))
     } catch (error) {
-        res.status(400).send(`${error.name}: ${error.message}`)
+        res.status(400).send(JSON.stringify(`${error.name}: ${error.message}`))
     }
 })
 
@@ -93,5 +98,5 @@ app.get('/users/class', (req, res) => {
 })
 
 app.use('*', (req, res) => {
-    res.status(404).send('route no exists')
+    res.status(404).send(JSON.stringify('route no exists'))
 })
