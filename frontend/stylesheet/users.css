@@ -73,10 +73,10 @@ tbody, td {
 
 #btn-submit-denied:hover {
     transition: 0.1s;
-    color: var(--dark-btn-denied-hov)
+    color: var(--dark-btn-denied-hov);
 }
 
 #btn-submit-approve:hover {
     transition: 0.1s;
-    color: var(--dark-btn-approved-hov)
+    color: var(--dark-btn-approved-hov);
 }
