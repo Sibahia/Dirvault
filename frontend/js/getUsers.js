@@ -48,8 +48,6 @@ function deleteUser(id, name) {
 }
 
 function userVerified (name) {
-    const queryParams = new URLSearchParams();
-    queryParams.append('name', name);
 
     fetch(`http://localhost:5500/users/requests?name=${name}`, {
         method: 'POST',
